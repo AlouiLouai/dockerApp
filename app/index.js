@@ -1,8 +1,11 @@
 const express = require('express');
 
+const sequelize = require('./utils/database')
+//const User = require('./models/users')
+
 const app = express();
 
-const PORT = 3000
+const PORT = process.env.EXTERNAL_PORT
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true}));
@@ -14,6 +17,18 @@ app.use((req, res, next) => {
   next();
 })
 
-app.listen(PORT, () => {
-  console.log(`succefully connected to :${PORT}`)
-})
+// my routes here
+app.use('/users', require('./routes/users'))
+
+// the power that let async function call just after its implementation
+(async () => {
+  try {
+    await sequelize.sync(
+      {force: false}
+    )
+    console.log('test')
+    app.listen(PORT || 3001)
+  } catch (error) {
+    console.log(error)
+  }
+})()
