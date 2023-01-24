@@ -5,20 +5,20 @@ services:
   backend:
     container_name: backend
     image: node:16
-    env_file:
-      - ".env"
     build:
       context: .
+    command: npm start
     ports:
-      - "${EXTERNAL_PORT}:${EXTERNAL_PORT}"
+      - 3001:3001
     environment:
-      - EXTERNAL_PORT=${EXTERNAL_PORT}
-      - PGDATABASE=${POSTGRES_DB}
-      - PGUSER=${POSTGRES_USER}
-      - PGPASSWORD=${POSTGRES_PASSWORD}
+      - EXTERNAL_PORT=3001
+      - PGDATABASE=lou_db
+      - PGUSER=louai
+      - PGPASSWORD=password
       - PGHOST=database
     depends_on:
       - database
+
   
   database:
     container_name: database
@@ -26,13 +26,19 @@ services:
     env_file:
       - ".env"
     ports:
-      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
     volumes:
       - nps_data:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
 
 volumes:
   nps_data: {}

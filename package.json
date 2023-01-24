@@ -4,7 +4,7 @@
   "description": "express js , postgresql , sequelize , docker",
   "main": "index.js",
   "scripts": {
-    "develop": "nodemon app/index.js",
+    "start": "nodemon app/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
